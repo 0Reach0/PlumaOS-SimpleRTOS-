@@ -23,10 +23,9 @@ extern uint32_t * tempStack ;
 
 
 //code u need to paste in handler of shceduler irq
-//			disable_mainTimer();																		                     
+//	disable_mainTimer();																		                     
 //	static uint32_t idle_counter = 0;
-//	if(is_active) {		
-//	{	
+//	if(is_active) {			
 //		SAVE_CONTEXT()
 //    while(1) {  
 //			#ifdef USE_MAIN_INTERUPT_FOR_DELAYS
@@ -51,10 +50,9 @@ extern uint32_t * tempStack ;
 //														queue[i][it+1] = NULL;
 //															}
 //														}												    		
-//                        postpone(current->quant * QUANT_MULTIPLIER);		
-//												enable_irq();																															   
+//                        postpone(current->quant * QUANT_MULTIPLIER);																																   
 //												enable_mainTimer();																														 
-// 												reset_stack_and_switch(current->topStack);		
+//                        reset_stack_and_switch(current->topStack);																					 
 //												}
 //									}                                      																					 
 //               }   
@@ -63,8 +61,7 @@ extern uint32_t * tempStack ;
 //								else   idle_counter = (get_RVR - idle_counter) + get_CVR;
 //							 
 //            }                                              																					 
-//        }            	
-//}   
+//        }   
 
 
 //inline uint32_t * get_tempStack();

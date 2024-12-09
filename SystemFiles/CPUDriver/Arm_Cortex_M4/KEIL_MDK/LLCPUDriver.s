@@ -14,32 +14,40 @@
 	EXPORT	disable_irq
 	EXPORT  enable_irq
 	EXTERN  tempStack
+	EXTERN  FPCAR
 
 save_full_context
 
+	LDR  R3, =FPCAR
+	
+	LDR  R2, [R3]
+	
+	LDR R1 , [R2]
+	
 	MRS	  R2, PSP
 	
-    VSTR     S0, [R0, #0]
-    VSTR     S1, [R0, #4]
-    VSTR     S2, [R0, #8]
-    VSTR     S3, [R0, #12]
-    VSTR     S4, [R0, #16]
-    VSTR     S5, [R0, #20]
-    VSTR     S6, [R0, #24]
-    VSTR     S7, [R0, #28]
-    VSTR     S8, [R0, #32]
-    VSTR     S9, [R0, #36]
-    VSTR     S10, [R0, #40]
-    VSTR     S11, [R0, #44]
-    VSTR     S12, [R0, #48]
-    VSTR     S13, [R0, #52]
-    VSTR     S14, [R0, #56]
-	VSTR     S15, [R0, #60]
+	
+    VSTR     S0, [R1, #0]
+    VSTR     S1, [R1, #4]
+    VSTR     S2, [R1, #8]
+    VSTR     S3, [R1, #12]
+    VSTR     S4, [R1, #16]
+    VSTR     S5, [R1, #20]
+    VSTR     S6, [R1, #24]
+    VSTR     S7, [R1, #28]
+    VSTR     S8, [R1, #32]
+    VSTR     S9, [R1, #36]
+    VSTR     S10, [R1, #40]
+    VSTR     S11, [R1, #44]
+    VSTR     S12, [R1, #48]
+    VSTR     S13, [R1, #52]
+    VSTR     S14, [R1, #56]
+	VSTR     S15, [R1, #60]
 
 
     VMRS    R3, FPSCR
 	
-    STR     R3, [R0, #64] 
+    STR     R3, [R1, #64] 
 	
 	STR R4, [R2, #-4]
 	STR R5, [R2, #-8]
@@ -74,7 +82,7 @@ save_full_context
 		
 	STR R3, [R2]
 	
-	STR 	R2, [R1]
+	STR 	R2, [R0]
 	
 
     BX      LR	
@@ -94,7 +102,7 @@ save_lazy_context
     
 	SUB R2, R2, #36
 	
-	MOV R3, #0x00000010
+	MOV R3, #0x0000010
 		
 		
 	STR R3, [R2]
@@ -121,31 +129,31 @@ reset_stack_and_switch
 	MSR MSP, R1
 	
 	LDR R1, [R0]
-	TST R1, #0x08  
-	BEQ restore_lazy_context        
+	TST R1, #0x10  
+	BEQ restore_full_context        
 	
-	BL restore_full_context
+	BL restore_lazy_context
 	 
 	 BX      LR	
 
 restore_full_context
 
-	VLDR S16, [R0, #4]
-	VLDR S17, [R0, #8]
-	VLDR S18, [R0, #12]
-	VLDR S19, [R0, #16]
-	VLDR S20, [R0, #20]
-	VLDR S21, [R0, #24]
-	VLDR S22, [R0, #28]
-	VLDR S23, [R0, #32]	
-	VLDR S24, [R0, #36]
-	VLDR S25, [R0, #40]
-	VLDR S26, [R0, #44]
-	VLDR S27, [R0, #48]
-	VLDR S28, [R0, #52]
-	VLDR S29, [R0, #56]
-	VLDR S30, [R0, #60]
-	VLDR S31, [R0, #64]
+	VLDR S31, [R0, #4]
+	VLDR S30, [R0, #8]
+	VLDR S29, [R0, #12]
+	VLDR S28, [R0, #16]
+	VLDR S27, [R0, #20]
+	VLDR S26, [R0, #24]
+	VLDR S25, [R0, #28]
+	VLDR S24, [R0, #32]	
+	VLDR S23, [R0, #36]
+	VLDR S22, [R0, #40]
+	VLDR S21, [R0, #44]
+	VLDR S20, [R0, #48]
+	VLDR S19, [R0, #52]
+	VLDR S18, [R0, #56]
+	VLDR S17, [R0, #60]
+	VLDR S16, [R0, #64]
 
 	
 	LDR R11, [R0, #68]
