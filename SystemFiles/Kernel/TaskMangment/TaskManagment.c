@@ -4,37 +4,13 @@
 #include "CPUDriver.h"
 #include "TaskDelay.h"
 
-struct STask * current;
-struct STask ** queue[PRIOR_LEVELS];
+struct sTask * current;
+struct sTask ** queue[PRIOR_LEVELS];
 uint8_t queueSize[PRIOR_LEVELS];
 uint8_t reservedQueueSize[PRIOR_LEVELS];
 
-		
 
-
-//inline struct STask * get_current()
-//{
-//	return current;
-//}
-
-//inline void set_current(struct STask * task)
-//{
-//		current = task;
-//}
-
-//inline struct STask *** get_tasksQueue() {return queue;}
-
-//inline void set_taskQueue(STask *** arr){queue = arr;}
-
-//inline uint8_t * get_tasksSize() {return queueSize;}
-
-//inline void set_taskSize(uint8_t * sz){ queueSize =sz;}
-
-//inline uint8_t * get_tasksReserved() {return  reservedQueueSize;}
-
-//inline void set_tasksReserved(uint8_t * sz){return reservedQueueSize = sz;}
-
-uint8_t change_prior(struct STask * task, uint8_t prior)
+uint8_t change_prior(struct sTask * task, uint8_t prior)
 {
     if(prior > PRIOR_LEVELS || prior <0) return 0;
     task->prior = prior;
@@ -42,15 +18,14 @@ uint8_t change_prior(struct STask * task, uint8_t prior)
 }
 
 
-struct STask * create_STask(void (*task)(uint32_t *),uint32_t * args ,uint8_t prior, uint32_t *stackPointer, uint32_t stackSize, uint8_t quant)
+struct sTask * create_sTask(void (*task)(uint32_t *),uint32_t * args ,uint8_t prior, uint32_t *stackPointer, uint32_t stackSize, uint8_t quant)
 {
-
 		uint32_t * updatedPointer = stackPointer+(((stackSize/sizeof(uint32_t *))-2));
     if(reservedQueueSize[prior]== 0)
     {
-        uint8_t newSize = RESIZE_INCREMENT + queueSize[prior];
+        uint8_t newSize = TASK_RESIZE_INCREMENT + queueSize[prior];
 
-        struct STask** newQueue = (struct STask**)malloc(newSize * sizeof(struct STask *));
+        struct sTask** newQueue = (struct sTask**)malloc(newSize * sizeof(struct sTask *));
         
         if(newQueue == NULL) {
             return 0;
@@ -64,32 +39,38 @@ struct STask * create_STask(void (*task)(uint32_t *),uint32_t * args ,uint8_t pr
         free(queue[prior]);
 
         queue[prior] = newQueue;
-        reservedQueueSize[prior] = RESIZE_INCREMENT;
+        reservedQueueSize[prior] =TASK_RESIZE_INCREMENT;
     }
-    struct STask  * newSTask = (struct STask *)malloc(sizeof(struct STask));
-		if(newSTask ==  NULL) 
+    struct sTask  * newsTask = (struct sTask *)malloc(sizeof(struct sTask));
+		if(newsTask ==  NULL) 
 		{
-			return 0;
+				return 0;
 		}
-    newSTask->task = task;
-    newSTask->args = args;
-    newSTask->stackPointer = updatedPointer;
-		newSTask->topStack = updatedPointer;
-    newSTask->stackSize = stackSize;
-    newSTask->prior = prior;
-    newSTask->delayTime = 0;
-		newSTask->isComplete = 1;
-		newSTask->isReady = 1;
-		newSTask->quant = quant;
-    queue[prior][queueSize[prior]] = newSTask;
+    newsTask->task = task;
+    newsTask->args = args;
+    newsTask->stackPointer = updatedPointer;
+		newsTask->topStack = updatedPointer;
+    newsTask->stackSize = stackSize;
+    newsTask->prior = prior;
+    newsTask->delayTicks = 0;
+		newsTask->delaySubTicks = 0;
+		newsTask->isComplete = 0;
+		newsTask->isReady = 1;
+		newsTask->quant = quant * QUANT_MULTIPLIER;
+		newsTask->remainQuant = quant;
+    if(!new_sDelay(newsTask))
+		{
+				free(newsTask);
+				return 0;
+		}
+		queue[prior][queueSize[prior]] = newsTask;
     queueSize[prior]+=1;
-    if(!new_onDelay(newSTask)) return 0;
     reservedQueueSize[prior]-=1;
-    create_new_context(newSTask->topStack, task, args);
-    return newSTask;
+    create_new_context(newsTask->topStack, task, args);
+    return newsTask;
 }
 
-void free_task(struct STask* task)
+void free_sTask(struct sTask* task)
 {
     task->isReady = 0;
 
@@ -103,21 +84,21 @@ void free_task(struct STask* task)
             break;
         }
     }
-    for(uint8_t i =0; i < reservedQueueSize[task->prior]-1; i++)
+    for(uint8_t i =0; i < reservedQueueSize[task->prior]-2; i++)
     {
         if(queue[task->prior] == 0)
         {    
             queue[task->prior][i] = queue[task->prior][i+1];
+						queue[task->prior][i+1] = 0;
         }    
     }
-		free_onDelay(task);
+		free_sDelay(task);
     free(task->stackPointer);
     free(task->task);
     free(task);
-
 }
 
-void sExit()
+void sExit(void)
 {
 	disable_mainTimer();
 	disable_irq();
@@ -130,7 +111,7 @@ void sExit()
 
 
 
-void null_process()
+void null_process(void)
 {
   	while(1);
 }

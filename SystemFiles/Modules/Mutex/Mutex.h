@@ -10,7 +10,7 @@
 #define unlock_mutex(sMutex)  sMutex = 0
 
 
-void locK_mutex(sMutex m);
+void lock_mutex(sMutex m);
 
 
 #endif

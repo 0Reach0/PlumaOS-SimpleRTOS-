@@ -7,39 +7,23 @@
 
 #include <stdint.h>
 
-struct STask;
+struct sTask;
 
 #define DEFAULT_RESERVED_ACTIVE_TIMERS_SIZE 2
 #define TIMERS_INTERRUPT_INTERVAL_TICKS 0x00FFFFFF 
 #define TIMER_RESIZE_INCREMENT 2
 
 
-#define reset_timer(timer, counter) timer->remainTicks = counter
 
-#define stop_timer(timer) timer->isStoped = 1;
+#define stop_timer(timer) timer->isStoped = 1
 
-#define resume_timer(timer) timer->isStoped = 0;
+#define resume_timer(timer) timer->isStoped = 0
 
+#define is_stoped(timer) timer->isStoped
 
-
-#define TIMER_HANDLE                               \
-     uint8_t isEdited = 0;													\
-    for(uint8_t i =0; i < timersArraySize ; i++)			\
-    {\
-        if(activeTimersArray[i]->remainTicks > 0 && !(activeTimersArray[i]->isStoped))\
-        {\
-            if(activeTimersArray[i]->remainTicks<= dec)\
-            {\
-               activeTimersArray[i]->callBack();\
-               free(activeTimersArray[i]);\
-               isEdited = 1;  \
-               timersArraySize--;\
-               timersArrayReservedSize++;\
-							activeTimersArray[i]->remainTicks= 0;\
-							continue;\
-            }\
-						activeTimersArray[i]->remainTicks-= dec;\
-        }\
+extern uint8_t timersArrayReservedSize;
+extern uint8_t timersArraySize;
+extern struct Timer ** activeTimersArray ;
 
 
 		
@@ -49,6 +33,7 @@ struct STask;
 struct Timer
 {
     uint32_t remainTicks;
+		uint32_t remainSubTicks;
     void (*callBack)();
     uint8_t isStoped; 
 };
@@ -58,8 +43,11 @@ struct Timer
 
 uint8_t set_timer(struct Timer *, uint32_t,void (*callBack)());
 
+void reset_timer(struct Timer* timer, uint32_t ticks);
 
-uint8_t remove_timer(struct Timer *);
+void reset_long_timer(struct Timer *timer, uint32_t ticks, uint32_t subTicks);
+
+uint8_t remove_timer(struct Timer * timer);
 
 void process_timers(uint32_t dec);
 

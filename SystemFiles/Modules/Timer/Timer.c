@@ -11,46 +11,46 @@
 uint8_t timersArrayReservedSize = DEFAULT_RESERVED_ACTIVE_TIMERS_SIZE;
 uint8_t timersArraySize = 0;
 
-struct Timer ** activeTimersArray ;
+struct Timer ** activeTimersArray;
 
 void process_timers(uint32_t dec)
-{
-    uint8_t isEdited = 0;
-    for(uint8_t i =0; i < timersArraySize ; i++)
-    {
-        if(activeTimersArray[i]->remainTicks > 0 && !(activeTimersArray[i]->isStoped))
+{				
+		    for(uint8_t i =0; i < timersArraySize ; i++)
+				{
+				if(!(activeTimersArray[i]->isStoped) && (activeTimersArray[i]->remainTicks != 0 || activeTimersArray[i]->remainSubTicks != 0))
         {
-            if(activeTimersArray[i]->remainTicks<= dec)
-            {
-               activeTimersArray[i]->callBack();
-               free(activeTimersArray[i]);
-               isEdited = 1;  
-               timersArraySize--;
-               timersArrayReservedSize++;
-							activeTimersArray[i]->remainTicks= 0;
-							continue;
-            }
-						activeTimersArray[i]->remainTicks-= dec;
+					  if(dec >= activeTimersArray[i]->remainSubTicks)
+						{
+							if(activeTimersArray[i]->remainTicks  == 0)
+							{	
+								activeTimersArray[i]->callBack();
+								activeTimersArray[i]->remainTicks= 0;
+								activeTimersArray[i]->remainSubTicks = 0;
+								activeTimersArray[i]->isStoped = 1;
+							}
+							else{
+								dec-=activeTimersArray[i]->remainSubTicks;
+								activeTimersArray[i]->remainTicks-=1;
+								activeTimersArray[i]->remainSubTicks = TIME_TICK_VAL - dec;
+								if(activeTimersArray[i]->remainSubTicks== 0)
+								{
+									activeTimersArray[i]->isStoped = 1;
+								}
+							}
+							}
+						else
+						{	
+							activeTimersArray[i]->remainSubTicks-=dec;
+						}			
         }
     }
-    if(isEdited == 1)
-    {
-        for(uint8_t i =0; i < timersArrayReservedSize-1 ; i++)
-        {
-            if(activeTimersArray[i] == 0)
-            {
-                activeTimersArray[i] = activeTimersArray[i+1];
-            }
-        }
-    }
-    return;
 }
 
 
 
-uint8_t set_timer(struct Timer * t, uint32_t c, void (*callBack)())
+uint8_t set_timer(struct Timer * t, uint32_t ticks, void (*callBack)())
 {
-      if(timersArrayReservedSize == 0)
+     if(timersArrayReservedSize == 0)
     {
         uint8_t newSize = TIMER_RESIZE_INCREMENT+ timersArraySize;
         struct Timer ** newArray = (struct Timer**)malloc(newSize * sizeof(struct Timer*));
@@ -66,9 +66,9 @@ uint8_t set_timer(struct Timer * t, uint32_t c, void (*callBack)())
 
     }
 
-    t->remainTicks = c *QUANT_MULTIPLIER ;
+    t->remainTicks = ticks;
     t->callBack = callBack;
-    t->isStoped = 0;
+    t->isStoped = 1;
     activeTimersArray[timersArraySize] = t;
     timersArraySize++; 
     return 1;
@@ -97,6 +97,15 @@ uint8_t remove_timer(struct Timer * t)
     }
 }
 
+void reset_timer(struct Timer *timer, uint32_t ticks){
+	timer->remainTicks= ticks/TIME_TICK_VAL;
+	timer->remainSubTicks = ticks%TIME_TICK_VAL;
+}
 
+
+void reset_long_timer(struct Timer* timer, uint32_t ticks, uint32_t subTicks){
+	timer->remainTicks = ticks;
+	timer->remainSubTicks = subTicks;
+}
 
 #endif

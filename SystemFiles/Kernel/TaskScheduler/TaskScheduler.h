@@ -8,37 +8,46 @@
 #define SCHEDULE_TIME    10000
 
 
-#define Schedule() postpone(SCHEDULE_TIME);
+#define Schedule() set_main_RVR(SCHEDULE_TIME);
 
 #define is_active isActive
 #define set_active() isActive = 1
 #define reset_activr() isActive = 0
 
+#define GET_TEMP_STACK() tempStack
+
 extern uint8_t isActive;
 
-extern uint32_t * tempStack ;
+extern uint32_t * tempStack;
 
 //Also use this definitions in the file with timer interrupt_handler
 //#include "Kernel.h"
 
 
 //code u need to paste in handler of shceduler irq
-//	disable_mainTimer();																		                     
+//disable_mainTimer();
 //	static uint32_t idle_counter = 0;
+//	process_delays(MAIN_RVR);
+//	process_timers(MAIN_RVR);
+//	
+//	if(current!= NULL)
+//	{
+//			if(MAIN_RVR < current->remainQuant && current->isComplete != 1)
+//			{
+//					current->remainQuant-= MAIN_RVR;
+//					enable_mainTimer();
+//					return;
+//		
+//			}
+//			else{
+//					current->remainQuant = current->quant;	
+//			}
+//		}
+//	
 //	if(is_active) {			
 //		SAVE_CONTEXT()
 //    while(1) {  
-//			#ifdef USE_MAIN_INTERUPT_FOR_DELAYS
-//						if(current != 0) process_delays(current->quant * QUANT_MULTIPLIER);
-//						else process_delays(idle_counter);
-//					#endif  				
-//			#ifdef USE_MAIN_INTERUPT_FOR_TIMER
-//        		if(current != 0) process_timers(current->quant * QUANT_MULTIPLIER);   
-//						else process_timers(idle_counter);
-//					#endif
 //						idle_counter = get_CVR;				 	
-//            
-//						
 //						for(int i = 0; i < PRIOR_LEVELS; i++) {         																				 
 //                for(int t = 0; t < queueSize[i]; t++) {     																				 
 //                     if(queue[i][t]->isReady) {	
@@ -50,7 +59,7 @@ extern uint32_t * tempStack ;
 //														queue[i][it+1] = NULL;
 //															}
 //														}												    		
-//                        postpone(current->quant * QUANT_MULTIPLIER);																																   
+//                        set_main_RVR(MAIN_RVR);																																   
 //												enable_mainTimer();																														 
 //                        reset_stack_and_switch(current->topStack);																					 
 //												}
@@ -61,11 +70,7 @@ extern uint32_t * tempStack ;
 //								else   idle_counter = (get_RVR - idle_counter) + get_CVR;
 //							 
 //            }                                              																					 
-//        }   
+//        }            	  
 
-
-//inline uint32_t * get_tempStack();
-//	
-//inline void set_tempStack(uint32_t * stack);
 #endif 
 			

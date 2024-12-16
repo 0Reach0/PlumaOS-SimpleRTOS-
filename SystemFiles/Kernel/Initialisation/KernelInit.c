@@ -8,19 +8,19 @@
 #endif
 
 
- void start_kernel() {
-	set_active();
-	Schedule()
-	set_MSP(tempStack);
-	while(1);
+ void start_kernel(void) {
+		set_active();
+		Schedule()
+		set_MSP(tempStack);
+		while(1);
  }
 
-uint8_t init_kernel()
+uint8_t init_kernel(void)
 {
 	for(uint8_t i = 0; i < PRIOR_LEVELS;  i++)
 	{
 			queueSize[i] = 0;
-			queue[i] = (struct STask **)malloc(DEFAULT_RESERVED_Q_SIZE * sizeof(struct STask *));
+			queue[i] = (struct sTask **)malloc(DEFAULT_RESERVED_Q_SIZE * sizeof(struct sTask *));
 			if(queue[i] == NULL)
 			{
 					return 0;
@@ -44,14 +44,15 @@ uint8_t init_kernel()
 		}
 		
 		
-		tempStack +=(TEMP_STACK_SIZE/sizeof(uint32_t *))-1 ;
+		tempStack +=(TEMP_STACK_SIZE/sizeof(uint32_t *))-10 ;
 		
 		
-		onDelayArr = (struct STask **) malloc(RESERVED_ON_DELAY_SIZE *sizeof(struct STask *));
+		sDelayArr = (struct sTask **) malloc(RESERVED_ON_DELAY_SIZE *sizeof(struct sTask *));
+		
+		sDelayReserved = RESERVED_ON_DELAY_SIZE;
 		
 		
-		
-		if(onDelayArr == 0)
+		if(sDelayArr == 0)
 		{
 			return 0;
 		}
@@ -65,4 +66,7 @@ uint8_t init_kernel()
 							return 0;
 					}
 		#endif
+					
+					
+		set_main_RVR(MAIN_RVR);
 }

@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern struct STask * current;
+extern struct sTask * current;
 
 struct QM_T_Pair ** taskWaitingQueues;
 uint8_t taskWaitingQueuesSize;
@@ -63,7 +63,7 @@ void sQueueMessages_Free(struct sQueueMessages* queue) {
 }
 
 
-uint8_t make_waiting_task_for_message(struct sQueueMessages * q, struct STask * task, uint8_t prior)
+uint8_t make_waiting_task_for_message(struct sQueueMessages * q, struct sTask * task, uint8_t prior)
 {
 		if(prior > MESSAGES_QUEUE_PRIOR_LEVELS || prior < 1) return 0;
 		for(uint8_t i = 0; i < taskWaitingQueuesSize; i++)
@@ -80,7 +80,7 @@ uint8_t make_waiting_task_for_message(struct sQueueMessages * q, struct STask * 
 						}
 						else
 						{
-								struct STask ** newArr = (struct STask **)malloc((taskWaitingQueues[i]->messageWaitingTasksArrSize[prior] + MESSAGES_QUEUE_RESERVE_INCREMENT) * sizeof(struct STask *));
+								struct sTask ** newArr = (struct sTask **)malloc((taskWaitingQueues[i]->messageWaitingTasksArrSize[prior] + MESSAGES_QUEUE_RESERVE_INCREMENT) * sizeof(struct sTask *));
 								if(newArr == 0) return 0;
 								for(uint8_t t = 0; t < taskWaitingQueues[i]->messageWaitingTasksArrSize[prior]; t++)
 								{
@@ -105,7 +105,7 @@ uint8_t make_waiting_task_for_message(struct sQueueMessages * q, struct STask * 
 		newPair->queue = q;
 		for(uint8_t i = 0; i < MESSAGES_QUEUE_PRIOR_LEVELS; i++)
 		{
-			newPair->messageWaitingTasks[i] = (struct STask **)malloc(DEFAULT_RESERVED_QMT_SIZE * sizeof(struct STask *));
+			newPair->messageWaitingTasks[i] = (struct sTask **)malloc(DEFAULT_RESERVED_QMT_SIZE * sizeof(struct sTask *));
 			free(newPair);
 			return 0;
 		}
@@ -114,7 +114,7 @@ uint8_t make_waiting_task_for_message(struct sQueueMessages * q, struct STask * 
 }
 
 
-uint8_t make_waiting_task_for_space(struct sQueueMessages * q, struct STask * task, uint8_t prior)
+uint8_t make_waiting_task_for_space(struct sQueueMessages * q, struct sTask * task, uint8_t prior)
 {
 		if(prior > MESSAGES_QUEUE_PRIOR_LEVELS || prior < 1) return 0;
 		for(uint8_t i = 0; i < taskWaitingQueuesSize; i++)
@@ -131,7 +131,7 @@ uint8_t make_waiting_task_for_space(struct sQueueMessages * q, struct STask * ta
 						}
 						else
 						{
-								struct STask ** newArr = (struct STask **)malloc((taskWaitingQueues[i]->spaceWaitingTasksArrSize[prior] + MESSAGES_QUEUE_RESERVE_INCREMENT) * sizeof(struct STask *));
+								struct sTask ** newArr = (struct sTask **)malloc((taskWaitingQueues[i]->spaceWaitingTasksArrSize[prior] + MESSAGES_QUEUE_RESERVE_INCREMENT) * sizeof(struct sTask *));
 								if(newArr == 0) return 0;
 								for(uint8_t t = 0; t < taskWaitingQueues[i]->spaceWaitingTasksArrSize[prior]; t++)
 								{
@@ -156,7 +156,7 @@ uint8_t make_waiting_task_for_space(struct sQueueMessages * q, struct STask * ta
 		newPair->queue = q;
 		for(uint8_t i = 0; i < MESSAGES_QUEUE_PRIOR_LEVELS; i++)
 		{
-			newPair->spaceWaitingTasks[i] = (struct STask **)malloc(DEFAULT_RESERVED_QMT_SIZE * sizeof(struct STask *));
+			newPair->spaceWaitingTasks[i] = (struct sTask **)malloc(DEFAULT_RESERVED_QMT_SIZE * sizeof(struct sTask *));
 			free(newPair);
 			return 0;
 		}
