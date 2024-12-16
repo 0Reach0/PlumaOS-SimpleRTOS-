@@ -1,5 +1,15 @@
 # PlumaOS
 
+
+## Inctruction
+
+### 1. Move files into your project
+
+### 2. In the `CPUDriver.h` file, you'll find a `comment` with `code` and `include file` name that needs to be inserted into the timer IRQ handler (this will serve as the task scheduler)
+
+
+
+
 ## Project Structure
 
 This project consists of several key components organized into the following directories:
