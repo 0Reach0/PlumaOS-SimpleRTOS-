@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-struct sTask;
+struct STask;
 
 #define DEFAULT_RESERVED_ACTIVE_TIMERS_SIZE 2
 #define TIMERS_INTERRUPT_INTERVAL_TICKS 0x00FFFFFF 
@@ -15,11 +15,9 @@ struct sTask;
 
 
 
-#define stop_timer(timer) timer->isStoped = 1
+#define stop_timer(timer) timer->isStoped = 1;
 
-#define resume_timer(timer) timer->isStoped = 0
-
-#define is_stoped(timer) timer->isStoped
+#define resume_timer(timer) timer->isStoped = 0;
 
 extern uint8_t timersArrayReservedSize;
 extern uint8_t timersArraySize;
@@ -47,7 +45,7 @@ void reset_timer(struct Timer* timer, uint32_t ticks);
 
 void reset_long_timer(struct Timer *timer, uint32_t ticks, uint32_t subTicks);
 
-uint8_t remove_timer(struct Timer * timer);
+uint8_t remove_timer(struct Timer *);
 
 void process_timers(uint32_t dec);
 

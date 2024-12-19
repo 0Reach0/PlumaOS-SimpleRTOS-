@@ -1,5 +1,3 @@
-;FPCAR  EQU 0xE000EF38
-	
 	
 	AREA    Contexts, CODE, READONLY
 

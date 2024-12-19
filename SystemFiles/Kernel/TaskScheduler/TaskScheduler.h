@@ -18,7 +18,7 @@
 
 extern uint8_t isActive;
 
-extern uint32_t * tempStack;
+extern uint32_t * tempStack ;
 
 //Also use this definitions in the file with timer interrupt_handler
 //#include "Kernel.h"
@@ -72,5 +72,9 @@ extern uint32_t * tempStack;
 //            }                                              																					 
 //        }            	  
 
+
+//inline uint32_t * get_tempStack();
+//	
+//inline void set_tempStack(uint32_t * stack);
 #endif 
 			

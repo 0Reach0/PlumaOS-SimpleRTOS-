@@ -8,7 +8,7 @@
 #ifndef __SQUEUE_MESSAGES_H__
 #define __SQUEUE_MESSAGES_H__
 
-#include "sTask.h"
+#include "STask.h"
 #include <stdint.h>
 
 #define DEFAULT_RESERVED_QMT_SIZE 2
@@ -31,11 +31,11 @@ struct sQueueMessages{
 struct QM_T_Pair
 {
 	struct sQueueMessages * queue;
-	struct sTask ** spaceWaitingTasks[MESSAGES_QUEUE_PRIOR_LEVELS];
+	struct STask ** spaceWaitingTasks[MESSAGES_QUEUE_PRIOR_LEVELS];
 	uint8_t spaceWaitingTasksArrSize[MESSAGES_QUEUE_PRIOR_LEVELS];
 	uint8_t spaceWaitingTasksArrReservedSize[MESSAGES_QUEUE_PRIOR_LEVELS];
 	
-	struct sTask ** messageWaitingTasks[MESSAGES_QUEUE_PRIOR_LEVELS];
+	struct STask ** messageWaitingTasks[MESSAGES_QUEUE_PRIOR_LEVELS];
 	uint8_t messageWaitingTasksArrSize[MESSAGES_QUEUE_PRIOR_LEVELS];
 	uint8_t messageWaitingTasksArrReservedSize[MESSAGES_QUEUE_PRIOR_LEVELS];
 };
@@ -49,9 +49,9 @@ int enqueue(struct sQueueMessages* queue, void* data, uint8_t prior);
 
 int dequeue(struct sQueueMessages* queue, void* data, uint8_t prior);
 
-uint8_t make_waiting_task_for_message(struct sQueueMessages *, struct sTask *,uint8_t);
+uint8_t make_waiting_task_for_message(struct sQueueMessages *, struct STask *,uint8_t);
 
-uint8_t make_waiting_task_for_space(struct sQueueMessages *, struct sTask *,uint8_t);
+uint8_t make_waiting_task_for_space(struct sQueueMessages *, struct STask *,uint8_t);
 
 void wake_space_waiting_tasks(struct sQueueMessages *);
 
