@@ -7,37 +7,32 @@
 #define DELAY_RESIZE_INCREMENT      3
 
 
-#define GET_DELAY_ARR onDelayArr
+#define GET_DELAY_ARR sDelayArr
 
-#define GET_DELAY_SIZE onDelaySize
+#define GET_DELAY_SIZE sDelaySize
 
-#define GET_DELAY_RESERVED onDelayReserved
+#define GET_DELAY_RESERVED sDelayReserved
 
 
-struct STask;
+struct sTask;
 
-extern struct STask ** onDelayArr;
+extern struct sTask ** sDelayArr;
 
-extern uint8_t onDelaySize;
+extern uint8_t sDelaySize;
 
-extern uint8_t onDelayReserved;
+extern uint8_t sDelayReserved;
 
-//struct STask ** get_onDelayArr();
 
-//inline void set_onDelayArr(struct STask ** arr);
 
-//inline uint8_t get_onDelaySize();
 
-//inline void set_onDelaySize(uint8_t sz);
 
-void sDelay(uint32_t c);
+void sDelay(uint32_t ticks);
 
 void sLongDelay(uint32_t ticks, uint32_t subTicks);
 
-uint8_t new_onDelay(struct STask * task);
+uint8_t new_sDelay(struct sTask * task);
 
-
-void free_onDelay(struct STask* task);
+void free_sDelay(struct sTask* task);
 
 void process_delays(uint32_t dec);
 #endif

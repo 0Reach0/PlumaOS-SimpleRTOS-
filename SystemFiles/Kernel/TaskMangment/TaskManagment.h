@@ -1,7 +1,7 @@
 #ifndef __TASKMANAGMENT_H__
 #define __TASKMANAGMENT_H__
 #include <stdint.h>
-#include "STask.H"
+#include "sTask.H"
 
 #define POINTER_SIZE 32
 #define PRIOR_LEVELS 6
@@ -10,7 +10,7 @@
 
 #define make_sleep(task) task->isReady = 0
 
-#define wake(task)  task->isReady = 1
+#define wake(task)  task->isReady = 1 
 
 
 #define GET_CURRENT()  current
@@ -21,20 +21,20 @@
 
 #define GET_TASKS_ARR_RESERVED(numOfArr) reservedQueueSize[numOfArr]
 
-extern struct STask * current;
-extern struct STask ** queue[PRIOR_LEVELS];
+extern struct sTask * current;
+extern struct sTask ** queue[PRIOR_LEVELS];
 extern uint8_t queueSize[PRIOR_LEVELS];
 extern uint8_t reservedQueueSize[PRIOR_LEVELS];
 
-uint8_t change_prior(struct STask *, uint8_t);
+uint8_t change_prior(struct sTask * task, uint8_t prior);
 
-void sExit();
+void sExit(void);    //Using as LR(return link) for tasks
 
 void null_process(void);
 
-void free_task(struct STask*);
+void free_sTask(struct sTask* task);
 
-struct STask * create_STask(void (*task)(uint32_t *),uint32_t *,uint8_t, uint32_t *, uint32_t , uint8_t);
+struct sTask * create_sTask(void (*task)(uint32_t *),uint32_t * args ,uint8_t prior, uint32_t *stackPointer, uint32_t stackSize, uint8_t quant);
 
 
 #endif

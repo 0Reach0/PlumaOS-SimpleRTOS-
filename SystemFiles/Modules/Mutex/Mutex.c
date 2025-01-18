@@ -3,7 +3,7 @@
 #ifdef MUTEX
 
 
-void locK_mutex(sMutex m)
+void lock_mutex(sMutex m)
 {
     while(m)
     {

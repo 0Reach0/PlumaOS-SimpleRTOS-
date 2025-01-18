@@ -18,15 +18,17 @@
 
 extern uint8_t isActive;
 
-extern uint32_t * tempStack ;
+extern uint32_t * tempStack;
 
 //Also use this definitions in the file with timer interrupt_handler
 //#include "Kernel.h"
 
 
-//code u need to paste in handler of shceduler irq
-//disable_mainTimer();
-//	static uint32_t idle_counter = 0;
+//   if(current != 0)PRESAVE();
+//  if(is_active) {
+//        static uint32_t idle_counter = 0;
+//	disable_mainTimer();
+//      while(1) { 
 //	process_delays(MAIN_RVR);
 //	process_timers(MAIN_RVR);
 //	
@@ -43,38 +45,30 @@ extern uint32_t * tempStack ;
 //					current->remainQuant = current->quant;	
 //			}
 //		}
-//	
-//	if(is_active) {			
-//		SAVE_CONTEXT()
-//    while(1) {  
-//						idle_counter = get_CVR;				 	
-//						for(int i = 0; i < PRIOR_LEVELS; i++) {         																				 
-//                for(int t = 0; t < queueSize[i]; t++) {     																				 
+//			
+//		SAVE_CONTEXT() 
+//                current = 0;
+//		idle_counter = get_CVR;		
+//		for(uint8_t i = 0; i < (uint8_t)PRIOR_LEVELS; i++) {         																				 
+//                for(uint8_t t = 0; t < queueSize[i]; t++) {     																				 
 //                     if(queue[i][t]->isReady) {	
-//												current = queue[i][t];	
-//                        queue[i][t] = 0;                   																					 																											
-//                        for(uint8_t it = 0; it < (queueSize[i]-1); it++) { 													 
-//														if(queue[i][it] == 0 && it <= (queueSize[i]-1)-1){																									 
-//														queue[i][it] = queue[i][it+1];	
-//														queue[i][it+1] = NULL;
-//															}
-//														}												    		
-//                        set_main_RVR(MAIN_RVR);																																   
-//												enable_mainTimer();																														 
+//			current = queue[i][t];	               																					 																											
+//                        for(uint8_t it = t; it <= (queueSize[i]-2); it++) { 													 																								 
+//                                queue[i][it] = queue[i][it+1];	
+//				queue[i][it+1] = NULL;
+//			}												    		
+//                      set_main_RVR(MAIN_RVR);																																   
+//			enable_mainTimer();																														 
 //                        reset_stack_and_switch(current->topStack);																					 
-//												}
-//									}                                      																					 
-//               }   
-//								current = NULL;
-//								if(idle_counter < get_CVR) idle_counter = get_CVR - idle_counter;
-//								else   idle_counter = (get_RVR - idle_counter) + get_CVR;
+//	                }
+//		        }                                      																					 
+//             }   
+//			current = NULL;
+//			if(idle_counter < get_CVR) idle_counter = get_CVR - idle_counter;
+//			else   idle_counter = (get_RVR - idle_counter) + get_CVR;
 //							 
 //            }                                              																					 
 //        }            	  
 
-
-//inline uint32_t * get_tempStack();
-//	
-//inline void set_tempStack(uint32_t * stack);
 #endif 
 			

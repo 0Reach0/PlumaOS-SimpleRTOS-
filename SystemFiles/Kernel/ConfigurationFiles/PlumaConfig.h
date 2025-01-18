@@ -12,7 +12,7 @@
 
 #define TIMER
 
-//#define QUEUE_MESSAGES
+#define QUEUE_MESSAGES
 
 
 //#define USE_TIMER_1_AS_MAIN

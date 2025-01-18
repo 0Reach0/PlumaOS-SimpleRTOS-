@@ -8,10 +8,60 @@
     PUBLIC  set_MSP
     PUBLIC  set_PSP
     PUBLIC  create_new_context_ll
+    PUBLIC  save_context_ll
+    PUBLIC  PRESAVE
     PUBLIC  disable_irq
     PUBLIC  enable_irq
     EXTERN  tempStack
     EXTERN  FPCAR
+
+
+PRESAVE
+  MRS    R1, PSP
+  
+  LDR R2, =tempStack
+  LDR R0, [R2]
+  
+  LDR R3,  [R0, #-4]
+  STR R3, [R1, #-36]
+  
+  LDR R3,  [R0,#-8]
+  STR R3, [R1, #-32]
+  
+  LDR R3,  [R0,#-12]
+  STR R3, [R1, #-28]
+  
+  LDR R3,  [R0,#-16]
+  STR R3, [R1, #-24]
+  
+  LDR R3,  [R0,#-20]
+  STR R3, [R1, #-20]
+  
+  LDR R3,  [R0,#-24]
+  STR R3, [R1, #-16]
+  
+  LDR R3,  [R0,#-28]
+  STR R3, [R1, #-12]
+  
+  LDR R3,  [R0,#-32]
+  STR R3, [R1, #-8]
+  
+  LDR R3,  [R0,#-36]
+  STR R3, [R1, #-4]
+  
+  BX LR
+  
+save_context_ll
+   STR LR, [SP, #-4]
+    MRS R2, PSP
+    LDR R1, [R2, #-36]
+    TST     R1, #0x10     
+    BEQ     save_full_context    
+    BL       save_lazy_context  
+  
+    LDR LR, [SP, #-4]
+    BX LR
+
 
 save_full_context
 
@@ -46,14 +96,6 @@ save_full_context
   
     STR     R3, [R1, #64] 
   
-  STR R4, [R2, #-4]
-  STR R5, [R2, #-8]
-  STR R6, [R2, #-12]
-  STR R7, [R2, #-16]
-  STR R8, [R2, #-20]
-  STR R9, [R2, #-24]
-  STR R10, [R2, #-28]
-  STR R11, [R2, #-32]
 
   VSTR S16, [R2, #-36]
   VSTR S17, [R2, #-40]
@@ -73,29 +115,21 @@ save_full_context
     VSTR S31, [R2, #-96]
   
   
-  SUB R2, R2, #100
+     SUB R2, R2, #100
     
-  MOV R3, #0x00000000
+    MOV R3, #0x00000000
     
-  STR R3, [R2]
+    STR R3, [R2]
   
-  STR   R2, [R0]
+    STR   R2, [R0]
   
-
     BX      LR  
 
 save_lazy_context
+  
+  
   MRS    R2, PSP
   
-  
-  STR R4, [R2, #-4]
-  STR R5, [R2, #-8]
-  STR R6, [R2, #-12]
-  STR R7, [R2, #-16]
-  STR R8, [R2, #-20]
-  STR R9, [R2, #-24]
-  STR R10, [R2, #-28]
-  STR R11, [R2, #-32]
     
   SUB R2, R2, #36
   
@@ -107,11 +141,11 @@ save_lazy_context
   
   STR   R2, [R0]
   
-
+    
     BX      LR  
 set_MSP
 
-  MSR MSP, R0
+    MSR MSP, R0
     BX      LR
 
 set_PSP
@@ -192,7 +226,10 @@ restore_lazy_context
 
 create_new_context_ll
   
-  
+  STR R4, [SP, #-4] 
+  STR R5, [SP, #-8] 
+  STR R6, [SP, #-12]
+    
   MOV      R4, #0
 
   MOV      R6, #0x01000000
@@ -227,23 +264,33 @@ create_new_context_ll
   
   STR     R5, [R0]
   
+  LDR R4, [SP, #-4]
+  LDR R5, [SP, #-8]
+  LDR R6, [SP, #-12]
+ 
   BX      LR
-
+                
+                                   
+    
 disable_irq
+     STR R0, [SP, #-4]
     MOV     R0, #0xF0    
         MSR     BASEPRI, R0 
     CPSID   I    
         ISB                        
         DSB   
+    LDR R0, [SP, #-4]
     BX      LR    
 
 
 enable_irq
+      STR R0, [SP, #-4]
      MOV     R0, #0
        MSR     BASEPRI, R0
      CPSIE   I
        ISB
        DSB
+     LDR R0, [SP, #-4] 
      BX      LR
    
   END

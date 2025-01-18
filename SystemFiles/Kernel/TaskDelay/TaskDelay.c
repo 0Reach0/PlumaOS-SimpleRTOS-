@@ -1,14 +1,14 @@
 #include "TaskDelay.h"
-#include "STask.h"
+#include "sTask.h"
 #include "TaskManagment.h"
 #include "TaskScheduler.h"
 #include <stdlib.h>
 
 
-struct STask ** onDelayArr;
+struct sTask ** sDelayArr;
 
-uint8_t onDelaySize = 0;
-uint8_t onDelayReserved = 0;
+uint8_t sDelaySize = 0;
+uint8_t sDelayReserved = 0;
 
 
 void sLongDelay(uint32_t ticks, uint32_t subTicks)
@@ -16,8 +16,9 @@ void sLongDelay(uint32_t ticks, uint32_t subTicks)
 	  current->delayTicks = ticks;
 		current->delaySubTicks = subTicks;
 		current->isReady = 0;
-	current->isComplete = 1;
-    Schedule();
+		current->isComplete = 1;
+                Schedule();
+                while(!current->isReady);
 }
 
 
@@ -28,77 +29,84 @@ void sDelay(uint32_t ticks)
 		current->isReady = 0;
 		current->isComplete = 1;
 		Schedule();
+                while(!current->isReady);
 }
 
-uint8_t new_onDelay(struct STask * task)
+uint8_t new_sDelay(struct sTask * task)
 {
-		if(onDelayReserved <= 0)
+		if(sDelayReserved <= 0)
 		{
-				uint8_t newSize = onDelaySize+DELAY_RESIZE_INCREMENT;
-				struct STask** newQueue = (struct STask**)malloc(newSize * sizeof(struct STask*));
+				uint8_t newSize = sDelaySize+DELAY_RESIZE_INCREMENT;
+				struct sTask** newQueue = (struct sTask**)malloc(newSize * sizeof(struct sTask*));
 				if(newQueue == NULL)
 				{
 						return 0;
 				}
-				for (int i = 0; i < onDelaySize; i++) {
-						newQueue[i] = onDelayArr[i];
-						onDelayArr[i] = NULL;
+				for (int i = 0; i < sDelaySize; i++) {
+						newQueue[i] = sDelayArr[i];
+						sDelayArr[i] = NULL;
         }
-				free(onDelayArr);
-				onDelayReserved+=DELAY_RESIZE_INCREMENT;
-				onDelayArr = newQueue;
+				free(sDelayArr);
+				sDelayReserved+=DELAY_RESIZE_INCREMENT;
+				sDelayArr = newQueue;
 			}
-			onDelayArr[onDelaySize] = task;
-			onDelaySize++;    
-			onDelayReserved--;
+			sDelayArr[sDelaySize] = task;
+			sDelaySize++;    
+			sDelayReserved--;
+                        return 1;
 }
 
 
-void free_onDelay(struct STask * task)
+void free_sDelay(struct sTask * task)
 {
-	    for(uint8_t i = 0; i < onDelaySize-1; i++)
-    {
-        if(onDelayArr[i] == task)
+	    for(uint8_t i = 0; i < sDelaySize-1; i++)
+			{
+        if(sDelayArr[i] == task)
         {
-            onDelayArr[i] = 0;
-						if(onDelayArr[i] == 0 && i != onDelaySize-1)
-						{
-							onDelayArr[i] = onDelayArr[i+1];
-						}
-						return;
+            sDelayArr[i] = 0;
+						break;
         }
-    }
+			}
+			
+			for(uint8_t i = 0; i < sDelaySize-1; i++)
+			{
+					if(sDelayArr[i] == 0 && i != sDelaySize-2)
+					{
+							sDelayArr[i] = sDelayArr[i+1];
+							sDelayArr[i+1] = 0;
+					}
+			}
 }
 
 void process_delays(uint32_t dec)
 {
-    for(uint8_t i =0; i < onDelaySize; i++)
+    for(uint8_t i =0; i < sDelaySize; i++)
     {
-				if(!onDelayArr[i]->isReady && (onDelayArr[i]->delayTicks != 0 || onDelayArr[i]->delaySubTicks != 0))
+				if(!sDelayArr[i]->isReady && (sDelayArr[i]->delayTicks != 0 || sDelayArr[i]->delaySubTicks != 0))
         {
-					  if(dec >= onDelayArr[i]->delaySubTicks)
+					  if(dec >= sDelayArr[i]->delaySubTicks)
 						{
-							if(onDelayArr[i]->delayTicks  == 0)
-							{	
-								onDelayArr[i]->delayTicks= 0;
-								onDelayArr[i]->delaySubTicks = 0;
-								onDelayArr[i]->isReady = 1;
-							}
-							else{
-								dec-=onDelayArr[i]->delaySubTicks;
-								onDelayArr[i]->delayTicks-=1;
-								onDelayArr[i]->delaySubTicks = TIME_TICK_VAL - dec;
-								if(onDelayArr[i]->delaySubTicks == 0)
-								{
-									onDelayArr[i]->isReady = 1;
+								if(sDelayArr[i]->delayTicks  == 0)
+								{	
+									sDelayArr[i]->delayTicks= 0;
+									sDelayArr[i]->delaySubTicks = 0;
+									sDelayArr[i]->isReady = 1;
+                                                                        continue;
 								}
-							}
+								else{
+									dec-=sDelayArr[i]->delaySubTicks;
+									sDelayArr[i]->delayTicks-=1;
+									sDelayArr[i]->delaySubTicks = TIME_TICK_VAL - dec;
+									if(sDelayArr[i]->delaySubTicks == 0)
+									{
+                                                                            sDelayArr[i]->isReady = 1;
+									}
+								}
 							}
 						else
 						{	
-							onDelayArr[i]->delaySubTicks-=dec;
-						}
-						
+							sDelayArr[i]->delaySubTicks-=dec;
+						}	
         }
     }
 }

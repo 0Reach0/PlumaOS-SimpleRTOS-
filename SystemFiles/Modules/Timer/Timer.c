@@ -11,7 +11,7 @@
 uint8_t timersArrayReservedSize = DEFAULT_RESERVED_ACTIVE_TIMERS_SIZE;
 uint8_t timersArraySize = 0;
 
-struct Timer ** activeTimersArray ;
+struct Timer ** activeTimersArray;
 
 void process_timers(uint32_t dec)
 {				
@@ -41,18 +41,16 @@ void process_timers(uint32_t dec)
 						else
 						{	
 							activeTimersArray[i]->remainSubTicks-=dec;
-						}
-						
+						}			
         }
     }
-		
 }
 
 
 
 uint8_t set_timer(struct Timer * t, uint32_t ticks, void (*callBack)())
 {
-      if(timersArrayReservedSize == 0)
+     if(timersArrayReservedSize == 0)
     {
         uint8_t newSize = TIMER_RESIZE_INCREMENT+ timersArraySize;
         struct Timer ** newArray = (struct Timer**)malloc(newSize * sizeof(struct Timer*));
