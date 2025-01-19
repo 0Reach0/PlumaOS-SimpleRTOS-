@@ -4,6 +4,7 @@
 #include "PlumaConfig.h"
 
 extern volatile uint32_t * FPCCR;
+extern volatile uint32_t *FPCAR;
 extern volatile uint32_t* SYS_RVR;
 extern volatile uint32_t* SYS_CVR;
 extern volatile uint32_t * SYS_CSR;
@@ -12,19 +13,17 @@ extern uint32_t exc_return;
 
 
 #define ARCH  ARM_V7
-
-
-#define IS_FPU_USED() (*FPCCR & (1 << 0))		
-
+	
 
 #define get_CVR (*SYS_CVR >> 8)
 
 #define get_RVR (*SYS_RVR >> 8)
+		
 
-								
+
 #define create_new_context(topStack, task, args)\
 		{			\
-			create_new_context_ll((volatile uint32_t **)&topStack, task, args, sExit);\
+			create_new_context_ll(topStack, task, args, sExit);\
 		}
 
 		
@@ -34,7 +33,7 @@ extern uint32_t exc_return;
 
 	 #define enable_mainTimer() *SYS_CSR |=  (1 << 1)
 #endif		
-		
+
 		
 		
 #define SAVE_CONTEXT()                                                                                  \
@@ -43,24 +42,27 @@ extern uint32_t exc_return;
 			uint8_t currentPrior = current->prior;                                          \
 			queue[currentPrior][queueSize[currentPrior]-1] = current;                       \
 			if(!current->isComplete){                                                       \
-				if(IS_FPU_USED())save_full_context(&current->topStack);                 \
-				else save_lazy_context(&current->topStack); }                           \
+			save_context_ll(&current->topStack); }                                    \
 			else                                                                            \
 			{                                                                               \
 				current->isComplete = 0;                                                \
 					current->topStack = current->stackPointer;                      \
-  					create_new_context(current->topStack, current->task, current->args);\
+  					create_new_context(&current->topStack, current->task, current->args);\
 				}                                                                       \
 		}                                                                                       \
 		enable_irq();                                                                                                                                           
 
 		
 		
-		
-extern void save_full_context(volatile uint32_t ** stackPointer);
+
+extern void PRESAVE();
+
+extern void save_context_ll( uint32_t ** stackPointer);
+
+extern void save_full_context(uint32_t ** stackPointer);
 	
 	
-extern void save_lazy_context(volatile uint32_t ** stackPointer);
+extern void save_lazy_context(uint32_t ** stackPointer);
 
 	
 extern void set_MSP(uint32_t *new_sp);
@@ -78,7 +80,7 @@ extern void restore_full_context(uint32_t* stackPointer);
 extern void restore_lazy_context(uint32_t* stackPointer);
 	
 
-extern void create_new_context_ll(volatile uint32_t **topStack, void (*task)(uint32_t *), uint32_t * args, void (*free_sTask)());  //better to use create_new_context() mcros instead
+extern void create_new_context_ll(uint32_t **topStack, void (*task)(uint32_t *), uint32_t * args, void (*free_sTask)());  //better to use create_new_context() mcros instead
 	
 	
 extern void disable_irq(void);	
@@ -89,6 +91,7 @@ extern void enable_irq(void);
 
 void set_main_RVR(uint32_t); //using to set the main timer reset value
 
+extern uint8_t GET_FPU_STATUS_AND_RESET();
 
 void sExit();
 
