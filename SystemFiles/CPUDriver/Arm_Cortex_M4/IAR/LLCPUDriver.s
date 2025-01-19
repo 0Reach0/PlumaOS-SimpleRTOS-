@@ -19,35 +19,11 @@
 PRESAVE
   MRS    R1, PSP
   
-  LDR R2, =tempStack
-  LDR R0, [R2]
+  LDR R0, =tempStack
+  LDR R0, [R0]
   
-  LDR R3,  [R0, #-4]
+  LDR R3,  [R0, #-4]   ;save lr
   STR R3, [R1, #-36]
-  
-  LDR R3,  [R0,#-8]
-  STR R3, [R1, #-32]
-  
-  LDR R3,  [R0,#-12]
-  STR R3, [R1, #-28]
-  
-  LDR R3,  [R0,#-16]
-  STR R3, [R1, #-24]
-  
-  LDR R3,  [R0,#-20]
-  STR R3, [R1, #-20]
-  
-  LDR R3,  [R0,#-24]
-  STR R3, [R1, #-16]
-  
-  LDR R3,  [R0,#-28]
-  STR R3, [R1, #-12]
-  
-  LDR R3,  [R0,#-32]
-  STR R3, [R1, #-8]
-  
-  LDR R3,  [R0,#-36]
-  STR R3, [R1, #-4]
   
   BX LR
   
@@ -63,74 +39,124 @@ save_context_ll
     BX LR
 
 
-save_full_context
-
-  LDR  R3, =FPCAR
-  
-  LDR  R2, [R3]
-  
-  LDR R1 , [R2]
+save_full_context  
+  LDR R1, =tempStack
+  LDR R1, [R1]
   
   MRS    R2, PSP
   
+  LDR R3,  [R1,#-8]    ;save r11         
+  STR R3, [R2, #-32]
   
-    VSTR     S0, [R1, #0]
-    VSTR     S1, [R1, #4]
-    VSTR     S2, [R1, #8]
-    VSTR     S3, [R1, #12]
-    VSTR     S4, [R1, #16]
-    VSTR     S5, [R1, #20]
-    VSTR     S6, [R1, #24]
-    VSTR     S7, [R1, #28]
-    VSTR     S8, [R1, #32]
-    VSTR     S9, [R1, #36]
-    VSTR     S10, [R1, #40]
-    VSTR     S11, [R1, #44]
-    VSTR     S12, [R1, #48]
-    VSTR     S13, [R1, #52]
-    VSTR     S14, [R1, #56]
+  LDR R3,  [R1,#-12]   ;save r10
+  STR R3, [R2, #-28]    
+  
+  LDR R3,  [R1,#-16]
+  STR R3, [R2, #-24]
+  
+  LDR R3,  [R1,#-20]
+  STR R3, [R2, #-20]
+  
+  LDR R3,  [R1,#-24]
+  STR R3, [R2, #-16]
+  
+  LDR R3,  [R1,#-28]
+  STR R3, [R2, #-12]
+  
+  LDR R3,  [R1,#-32]
+  STR R3, [R2, #-8]
+  
+  LDR R3,  [R1,#-36]
+  STR R3, [R2, #-4]     ;save r4
+
+  LDR  R1, =FPCAR
+  
+  LDR  R1, [R1]
+  
+  LDR R1 , [R1]
+  
+
+
+  VSTR     S0, [R1, #0]
+  VSTR     S1, [R1, #4]
+  VSTR     S2, [R1, #8]
+  VSTR     S3, [R1, #12]
+  VSTR     S4, [R1, #16]
+  VSTR     S5, [R1, #20]
+  VSTR     S6, [R1, #24]
+  VSTR     S7, [R1, #28]
+  VSTR     S8, [R1, #32]
+  VSTR     S9, [R1, #36]
+  VSTR     S10, [R1, #40]
+  VSTR     S11, [R1, #44]
+  VSTR     S12, [R1, #48]
+  VSTR     S13, [R1, #52]
+  VSTR     S14, [R1, #56]
   VSTR     S15, [R1, #60]
 
 
-    VMRS    R3, FPSCR
+  VMRS    R3, FPSCR
   
-    STR     R3, [R1, #64] 
+  STR     R3, [R1, #64] 
   
 
   VSTR S16, [R2, #-36]
   VSTR S17, [R2, #-40]
   VSTR S18, [R2, #-44]
-    VSTR S19, [R2, #-48]
-    VSTR S20, [R2, #-52]
-    VSTR S21, [R2, #-56]
-    VSTR S22, [R2, #-60]
-    VSTR S23, [R2, #-64]
-    VSTR S24, [R2, #-68]
-    VSTR S25, [R2, #-72]
-    VSTR S26, [R2, #-76]
-    VSTR S27, [R2, #-80]
-    VSTR S28, [R2, #-84]
-    VSTR S29, [R2, #-88]
-    VSTR S30, [R2, #-92]
-    VSTR S31, [R2, #-96]
+  VSTR S19, [R2, #-48]
+  VSTR S20, [R2, #-52]
+  VSTR S21, [R2, #-56]
+  VSTR S22, [R2, #-60]
+  VSTR S23, [R2, #-64]
+  VSTR S24, [R2, #-68]
+  VSTR S25, [R2, #-72]
+  VSTR S26, [R2, #-76]
+  VSTR S27, [R2, #-80]
+  VSTR S28, [R2, #-84]
+  VSTR S29, [R2, #-88]
+  VSTR S30, [R2, #-92]
+  VSTR S31, [R2, #-96]
   
   
-     SUB R2, R2, #100
+  SUB R2, R2, #100
     
-    MOV R3, #0x00000000
+  MOV R3, #0x00000000
     
-    STR R3, [R2]
+  STR R3, [R2]
   
-    STR   R2, [R0]
+  STR   R2, [R0]
   
-    BX      LR  
+  BX      LR  
 
-save_lazy_context
-  
-  
+save_lazy_context 
+  LDR R1, =tempStack
+  LDR R1, [R1]
   MRS    R2, PSP
   
-    
+  LDR R3,  [R1,#-8]    ;save r11         
+  STR R3, [R2, #-32]
+  
+  LDR R3,  [R1,#-12]   ;save r10
+  STR R3, [R2, #-28]    
+  
+  LDR R3,  [R1,#-16]
+  STR R3, [R2, #-24]
+  
+  LDR R3,  [R1,#-20]
+  STR R3, [R2, #-20]
+  
+  LDR R3,  [R1,#-24]
+  STR R3, [R2, #-16]
+  
+  LDR R3,  [R1,#-28]
+  STR R3, [R2, #-12]
+  
+  LDR R3,  [R1,#-32]
+  STR R3, [R2, #-8]
+  
+  LDR R3,  [R1,#-36]
+  STR R3, [R2, #-4]     ;save r4
+  
   SUB R2, R2, #36
   
   MOV R3, #0x0000010
