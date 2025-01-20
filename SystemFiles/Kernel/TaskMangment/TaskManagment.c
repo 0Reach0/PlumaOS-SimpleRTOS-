@@ -19,7 +19,10 @@ uint8_t change_prior(struct sTask * task, uint8_t prior)
 
 
 struct sTask * create_sTask(void (*task)(uint32_t *),uint32_t * args ,uint8_t prior, uint32_t *stackPointer, uint32_t stackSize, uint8_t quant)
-{
+{ 
+
+  if(prior > PRIOR_LEVELS) return 0;
+
 	uint32_t * updatedPointer = stackPointer+(((stackSize/sizeof(uint32_t *))-1));
     if(reservedQueueSize[prior]== 0)
     {
