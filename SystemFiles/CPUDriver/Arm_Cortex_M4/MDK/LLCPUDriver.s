@@ -26,29 +26,8 @@ PRESAVE
   LDR R3,  [R0, #-4] ;save lr
   STR R3, [R1, #-36]
   
-  MOV R3,  R11
-  STR R3, [R1, #-32]
-  
-  MOV R3,  R10
-  STR R3, [R1, #-28]
-  
-  MOV R3,  R9
-  STR R3, [R1, #-24]
-  
-  MOV R3,  R8
-  STR R3, [R1, #-20]
-  
-  MOV R3,  R7
+  LDR R3, [R0, #-8] ;save r7
   STR R3, [R1, #-16]
-  
-  MOV R3,  R6
-  STR R3, [R1, #-12]
-  
-  MOV R3,  R5
-  STR R3, [R1, #-8]
-  
-  MOV R3,  R4
-  STR R3, [R1, #-4]
   
   BX LR
   
@@ -73,67 +52,109 @@ save_full_context
   LDR R1 , [R2]
   
   MRS    R2, PSP
+
+  MOV R3,  R11
+  STR R3, [R2, #-32]
   
+  MOV R3,  R10
+  STR R3, [R2, #-28]
   
-    VSTR     S0, [R1, #0]
-    VSTR     S1, [R1, #4]
-    VSTR     S2, [R1, #8]
-    VSTR     S3, [R1, #12]
-    VSTR     S4, [R1, #16]
-    VSTR     S5, [R1, #20]
-    VSTR     S6, [R1, #24]
-    VSTR     S7, [R1, #28]
-    VSTR     S8, [R1, #32]
-    VSTR     S9, [R1, #36]
-    VSTR     S10, [R1, #40]
-    VSTR     S11, [R1, #44]
-    VSTR     S12, [R1, #48]
-    VSTR     S13, [R1, #52]
-    VSTR     S14, [R1, #56]
+  MOV R3,  R9
+  STR R3, [R2, #-24]
+  
+  MOV R3,  R8
+  STR R3, [R2, #-20]
+  
+  MOV R3,  R6
+  STR R3, [R2, #-12]
+  
+  MOV R3,  R5
+  STR R3, [R2, #-8]
+  
+  MOV R3,  R4
+  STR R3, [R2, #-4]
+
+  
+  VSTR     S0, [R1, #0]
+  VSTR     S1, [R1, #4]
+  VSTR     S2, [R1, #8]
+  VSTR     S3, [R1, #12]
+  VSTR     S4, [R1, #16]
+  VSTR     S5, [R1, #20]
+  VSTR     S6, [R1, #24]
+  VSTR     S7, [R1, #28]
+  VSTR     S8, [R1, #32]
+  VSTR     S9, [R1, #36]
+  VSTR     S10, [R1, #40]
+  VSTR     S11, [R1, #44]
+  VSTR     S12, [R1, #48]
+  VSTR     S13, [R1, #52]
+  VSTR     S14, [R1, #56]
   VSTR     S15, [R1, #60]
 
 
-    VMRS    R3, FPSCR
+  VMRS    R3, FPSCR
   
-    STR     R3, [R1, #64] 
+  STR     R3, [R1, #64] 
   
 
   VSTR S16, [R2, #-36]
   VSTR S17, [R2, #-40]
   VSTR S18, [R2, #-44]
-    VSTR S19, [R2, #-48]
-    VSTR S20, [R2, #-52]
-    VSTR S21, [R2, #-56]
-    VSTR S22, [R2, #-60]
-    VSTR S23, [R2, #-64]
-    VSTR S24, [R2, #-68]
-    VSTR S25, [R2, #-72]
-    VSTR S26, [R2, #-76]
-    VSTR S27, [R2, #-80]
-    VSTR S28, [R2, #-84]
-    VSTR S29, [R2, #-88]
-    VSTR S30, [R2, #-92]
-    VSTR S31, [R2, #-96]
+  VSTR S19, [R2, #-48]
+  VSTR S20, [R2, #-52]
+  VSTR S21, [R2, #-56]
+  VSTR S22, [R2, #-60]
+  VSTR S23, [R2, #-64]
+  VSTR S24, [R2, #-68]
+  VSTR S25, [R2, #-72]
+  VSTR S26, [R2, #-76]
+  VSTR S27, [R2, #-80]
+  VSTR S28, [R2, #-84]
+  VSTR S29, [R2, #-88]
+  VSTR S30, [R2, #-92]
+  VSTR S31, [R2, #-96]
   
   
-     SUB R2, R2, #100
+  SUB R2, R2, #100
     
-    MOV R3, #0x00000000
+  MOV R3, #0x00000000
     
-    STR R3, [R2]
+  STR R3, [R2]
   
-    STR   R2, [R0]
+  STR   R2, [R0]
   
-    BX      LR  
+  BX      LR  
 
 save_lazy_context
   
   
   MRS    R2, PSP
   
-    
-  SUB R2, R2, #36
+  MOV R3,  R11
+  STR R3, [R2, #-32]
   
+  MOV R3,  R10
+  STR R3, [R2, #-28]
+  
+  MOV R3,  R9
+  STR R3, [R2, #-24]
+  
+  MOV R3,  R8
+  STR R3, [R2, #-20]
+  
+  
+  MOV R3,  R6
+  STR R3, [R2, #-12]
+  
+  MOV R3,  R5
+  STR R3, [R2, #-8]
+  
+  MOV R3,  R4
+  STR R3, [R2, #-4]
+  
+  SUB R2, R2, #36
+ 
   MOV R3, #0x0000010
     
     
@@ -143,7 +164,7 @@ save_lazy_context
   STR   R2, [R0]
   
     
-    BX      LR  
+  BX      LR  
 set_MSP
 
     MSR MSP, R0
