@@ -1,0 +1,24 @@
+{
+  "FailedTests": [
+
+  ],
+  "PassedTests": [
+    {
+      "file": "test/test_taskmanagment.c",
+      "test": "test_create_sTask_withRightArgs"
+    },
+    {
+      "file": "test/test_taskmanagment.c",
+      "test": "test_create_sTask_withWrongArgs"
+    }
+  ],
+  "IgnoredTests": [
+
+  ],
+  "Summary": {
+    "total_tests": 2,
+    "passed": 2,
+    "ignored": 0,
+    "failures": 0
+  }
+}

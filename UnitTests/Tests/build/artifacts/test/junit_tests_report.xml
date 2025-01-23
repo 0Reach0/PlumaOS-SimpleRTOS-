@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<testsuites tests="2" failures="0" time="1.020">
+  <testsuite name="test/test_taskmanagment" tests="2" failures="0" skipped="0" errors="0" time="1.020">
+    <testcase name="test_create_sTask_withRightArgs" time="0.000"/>
+    <testcase name="test_create_sTask_withWrongArgs" time="0.000"/>
+  </testsuite>
+</testsuites>

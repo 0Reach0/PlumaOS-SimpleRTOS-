@@ -1,0 +1,23 @@
+---
+:source:
+  :file: test/test_taskmanagment.c
+  :dirname: test
+  :basename: test_taskmanagment.c
+:successes:
+- :test: test_create_sTask_withRightArgs
+  :line: 20
+  :message: ''
+  :unity_test_time: 0
+- :test: test_create_sTask_withWrongArgs
+  :line: 57
+  :message: ''
+  :unity_test_time: 0
+:failures: []
+:ignores: []
+:counts:
+  :total: 2
+  :passed: 2
+  :failed: 0
+  :ignored: 0
+:stdout: []
+:time: 1.0196224000001166

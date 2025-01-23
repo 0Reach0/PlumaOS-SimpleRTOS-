@@ -1,0 +1,112 @@
+pipeline {
+    agent any
+
+    triggers {
+        githubPush()
+    }
+
+    environment {
+        GITHUB_USER = '0Reach0'
+        REPO_URL = 'https://github.com/0Reach0/PlumaOS-SimpleRTOS-.git'
+        BRANCH_NAME = 'UnitTests'
+        DOCKER_IMAGE_NAME = 'dockerfile:latest'
+        DOCKERFILE_PATH = 'dockerfile'
+        WORK_DIR = 'UnitTests/Tests'
+        CREDENTIALS_TOKEN = 'YOUR_CREDENTIALS'
+        CREDENTIALS_USER = 'YOUR_CREDENTIALS'
+        CHECK_RESULTS_BAT = 'CheckResults.bat' 
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning repository...'
+                checkout scmGit(
+                    branches: [[name: "*/${env.BRANCH_NAME}"]],
+                    extensions: [],
+                    userRemoteConfigs: [[
+                        credentialsId: env.CREDENTIALS_USER,
+                        url: "${env.REPO_URL}"
+                    ]]
+                )
+            }
+        }
+
+        stage('Check GIT_COMMIT') {
+            steps {
+                echo "GIT_COMMIT in the next stage: ${env.GIT_COMMIT}"
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                    script {
+                        bat "docker build -t ${env.DOCKER_IMAGE_NAME} -f ${env.DOCKERFILE_PATH} ."
+                    }
+            }
+        }
+
+        stage('Run Docker') {
+            steps {
+                dir(env.WORK_DIR) {
+                    script {
+                        echo 'Running tests inside Docker container...'
+                        bat "docker run --rm -w /app ${env.DOCKER_IMAGE_NAME} ceedling test:all"
+                    }
+                }
+            }
+        }
+
+        stage('Check Test Result And Process') {
+            steps {
+                dir(env.WORK_DIR) {
+                    script {
+                        def CheckResult = bat(script: "${env.CHECK_RESULTS_BAT}", returnStatus: true)
+                        echo "${env.CHECK_RESULTS_BAT} return code: ${CheckResult}"
+
+                        if (CheckResult == 0) {
+                            echo "Test Passed, commit was approved"
+                        } else if (CheckResult == 1) {
+                            echo 'Tests failed. Creating revert commit...'
+                            try {
+                                def gitCommitOutput = bat(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                                echo "Raw output: ${gitCommitOutput}"
+
+                                // Извлекаем хэш коммита с помощью регулярного выражения
+                                def matcher = gitCommitOutput =~ /[0-9a-f]{40}/
+                                matcher.find()
+                                def commitHash = matcher.group(0) // Извлекаем найденный хэш
+                                echo "Cleaned commit hash: ${commitHash}"
+
+                                bat "git revert --no-edit ${commitHash}"
+                                pushChangesToGitHub()
+                            } catch (Exception e) {
+                                echo "Failed to create revert commit or push changes: ${e.getMessage()}"
+                            }
+                        } else {
+                            echo "Unknown CHECK_RESULT value: ${CheckResult}. No action taken."
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                echo "Finished!"
+            }
+        }
+    }
+}
+
+def pushChangesToGitHub() {
+    withCredentials([string(credentialsId: env.CREDENTIA_TOKEN, variable: 'GITHUB_TOKEN')]) {
+        def repoUrl = "https://%GITHUB_TOKEN%@github.com/${env.GITHUB_USER}/PlumaOS-SimpleRTOS-.git"
+        bat """
+            git push ${repoUrl} HEAD:UnitTests
+        """
+    }
+}
