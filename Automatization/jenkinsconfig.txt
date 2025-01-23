@@ -8,7 +8,7 @@ pipeline {
     environment {
         GITHUB_USER = '0Reach0'
         REPO_URL = 'https://github.com/0Reach0/PlumaOS-SimpleRTOS-.git'
-        BRANCH_NAME = 'UnitTests'
+        BRANCH_NAME = 'Dev'
         DOCKER_IMAGE_NAME = 'dockerfile:latest'
         DOCKERFILE_PATH = 'dockerfile'
         WORK_DIR = 'UnitTests/Tests'
