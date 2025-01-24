@@ -2,9 +2,14 @@
 #include "sQueueMessages.h"
 
 #ifdef QUEUE_MESSAGES
+
+
 #include "Kernel.h"
 #include <stdlib.h>
 #include <string.h>
+
+
+
 struct QM_T_Pair ** taskWaitingQueues;
 uint8_t taskWaitingQueuesSize = 0;
 

@@ -1,0 +1,18 @@
+var searchData=
+[
+  ['save_5fcontext_5fll_0',['save_context_ll',['../group__cpudriver.html#ga7f59d239e7d8b1d5e6a4fa9d2c977f83',1,'CPUDriver.h']]],
+  ['save_5ffull_5fcontext_1',['save_full_context',['../group__cpudriver.html#ga53c126f2b6a4d299b553cd9928200811',1,'CPUDriver.h']]],
+  ['save_5flazy_5fcontext_2',['save_lazy_context',['../group__cpudriver.html#gafb3b63d152f6495a18ff238d3a744f1b',1,'CPUDriver.h']]],
+  ['sdelay_3',['sDelay',['../group__task__delay.html#ga2983d04646cb59f0c65a015f9b1b0aa5',1,'sDelay(uint32_t ticks):&#160;TaskDelay.c'],['../group__task__delay.html#ga2983d04646cb59f0c65a015f9b1b0aa5',1,'sDelay(uint32_t ticks):&#160;TaskDelay.c']]],
+  ['set_5fmain_5frvr_4',['set_main_RVR',['../group__cpudriver.html#gaf018575dc8966c8dee3c6c4bc9e890b2',1,'set_main_RVR(uint32_t ticks):&#160;CPUDriver.h'],['../group__mcdriver.html#gaf018575dc8966c8dee3c6c4bc9e890b2',1,'set_main_RVR(uint32_t ticks):&#160;MCDriver.h']]],
+  ['set_5fmsp_5',['set_MSP',['../group__cpudriver.html#ga675c2745a454f70192948afe6e5abfd2',1,'CPUDriver.h']]],
+  ['set_5fpsp_6',['set_PSP',['../group__cpudriver.html#ga094f62b73e64b7dacb7b656716cd1b87',1,'CPUDriver.h']]],
+  ['set_5ftimer_7',['set_timer',['../group__timer.html#gacb547b523547b3034ef1cd27669c725f',1,'set_timer(struct Timer *t, uint32_t ticks, void(*callBack)()):&#160;Timer.c'],['../group__timer.html#gacb547b523547b3034ef1cd27669c725f',1,'set_timer(struct Timer *timer, uint32_t ticks, void(*callBack)()):&#160;Timer.c']]],
+  ['sexit_8',['sExit',['../group__cpudriver.html#gaa611e90d8046325ed23977b907c4e029',1,'sExit():&#160;TaskManagment.c'],['../group__cpudriver.html#gaa611e90d8046325ed23977b907c4e029',1,'sExit(void):&#160;TaskManagment.c'],['../group__task__managment.html#ga92c7beb3f46c22fdeed0ce55421b91e1',1,'sExit(void):&#160;TaskManagment.c']]],
+  ['slongdelay_9',['sLongDelay',['../group__task__delay.html#gafc4a44bb305fd01e8722638a61d79f65',1,'sLongDelay(uint32_t ticks, uint32_t subTicks):&#160;TaskDelay.c'],['../group__task__delay.html#gafc4a44bb305fd01e8722638a61d79f65',1,'sLongDelay(uint32_t ticks, uint32_t subTicks):&#160;TaskDelay.c']]],
+  ['squeuemessages_5fdequeue_10',['sQueueMessages_Dequeue',['../group__squeuemessages.html#ga4801c3836a947fd184283da5e43e7b18',1,'sQueueMessages_Dequeue(struct sQueueMessages *q, uint8_t *item):&#160;sQueueMessages.c'],['../group__squeuemessages.html#ga4801c3836a947fd184283da5e43e7b18',1,'sQueueMessages_Dequeue(struct sQueueMessages *q, uint8_t *data):&#160;sQueueMessages.c']]],
+  ['squeuemessages_5fenqueue_11',['sQueueMessages_Enqueue',['../group__squeuemessages.html#gae98fdd80def44032084c5e335d78feb0',1,'sQueueMessages_Enqueue(struct sQueueMessages *q, uint8_t *item):&#160;sQueueMessages.c'],['../group__squeuemessages.html#gae98fdd80def44032084c5e335d78feb0',1,'sQueueMessages_Enqueue(struct sQueueMessages *q, uint8_t *data):&#160;sQueueMessages.c']]],
+  ['squeuemessages_5ffree_12',['sQueueMessages_Free',['../s_queue_messages_8c.html#a5bb84e9ea863fbf37f40dfc1d91a5c77',1,'sQueueMessages.c']]],
+  ['squeuemessages_5finit_13',['sQueueMessages_Init',['../group__squeuemessages.html#gaa7ba4650e5057b21ec38052a15e83903',1,'sQueueMessages_Init(struct sQueueMessages *q, uint8_t capacity, uint32_t elementSize):&#160;sQueueMessages.c'],['../group__squeuemessages.html#gaa7ba4650e5057b21ec38052a15e83903',1,'sQueueMessages_Init(struct sQueueMessages *queue, uint8_t capacity, uint32_t elementSize):&#160;sQueueMessages.c']]],
+  ['start_5fkernel_14',['start_kernel',['../group__kernel__start__and__init.html#gaa75cd82293c8f20da246e44d5da5f2b5',1,'start_kernel(void):&#160;KernelInit.c'],['../group__kernel__start__and__init.html#gaa75cd82293c8f20da246e44d5da5f2b5',1,'start_kernel(void):&#160;KernelInit.c']]]
+];
