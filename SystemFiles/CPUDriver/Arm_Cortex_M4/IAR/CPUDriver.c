@@ -28,7 +28,4 @@ void set_main_RVR(uint32_t ticks)
         *SYS_CVR = (*SYS_CVR & last_8_bits) | (ticks & 0x00FFFFFF);
     }
 		
-	 #define disable_mainTimer() *SYS_CSR &= ~(1 << 1)
-
-	 #define enable_mainTimer() *SYS_CSR |=  (1 << 1)
 #endif

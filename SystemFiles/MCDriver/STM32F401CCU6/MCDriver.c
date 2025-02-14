@@ -16,11 +16,10 @@ uint32_t ms_to_ticks(uint32_t ms)
     volatile  uint32_t  *DIER = (volatile uint32_t *)TIM1_ADDR + 0x0C;
     volatile  uint32_t  *SR=  (volatile uint32_t *)TIM1_ADDR + 0x10;
     volatile  uint32_t * CR1 = (volatile uint32_t *)TIM1_ADDR + 0x0;
-    volatile uint32_t * CNT =  (volatile uint32_t *)TIM1_ADDR 0x24;
+    volatile uint32_t * CNT =  (volatile uint32_t *)TIM1_ADDR +0x24;
 
-		#define disable_mainTimer() *MTIM_ADDR &= ~(1 << 0);	
+			
 
-		#define enable_mainTimer() *MTIM_ADDR |=  (1 << 0);
 		 
     inline void set_main_RVR(uint32_t ticks)
     {
@@ -37,7 +36,7 @@ uint32_t ms_to_ticks(uint32_t ms)
 
         (*DIER) &= 0 << 0;
 
-        (*SR) &= 0 <<0
+        (*SR) &= 0 <<0;
 
         (*CR1) |= 1 << 0;
     }
@@ -51,12 +50,9 @@ uint32_t ms_to_ticks(uint32_t ms)
     volatile  uint32_t  *DIER = (volatile uint32_t *)TIM2_ADDR + 0x0C;
     volatile  uint32_t  *SR=  (volatile uint32_t *)TIM2_ADDR + 0x10;
     volatile  uint32_t * CR1 = (volatile uint32_t *)TIM2_ADDR + 0x0;
-    volatile uint32_t * CNT =  (volatile uint32_t *)TIM2_ADDR 0x24;
+    volatile uint32_t * CNT =  (volatile uint32_t *)TIM2_ADDR+ 0x24;
 		
 		
-		#define disable_mainTimer() *MTIM_ADDR &= ~(1 << 0);	
-
-		#define enable_mainTimer() *MTIM_ADDR |=  (1 << 0);
     
 		
 		inline void set_main_RVR(uint32_t ticks)
@@ -75,7 +71,7 @@ uint32_t ms_to_ticks(uint32_t ms)
 
         (*DIER) &= 0 << 0;
 
-        (*SR) &= 0 <<0
+        (*SR) &= 0 <<0;
 
         (*CR1) |= 1 << 0;
 
@@ -90,12 +86,7 @@ uint32_t ms_to_ticks(uint32_t ms)
     volatile  uint32_t  *DIER = (volatile uint32_t *)TIM3_ADDR + 0x0C;
     volatile  uint32_t  *SR=  (volatile uint32_t *)TIM3_ADDR + 0x10;
     volatile  uint32_t * CR1 = (volatile uint32_t *)TIM3_ADDR + 0x0;
-    volatile uint32_t * CNT =  (volatile uint32_t *)TIM3_ADDR 0x24;
-				
-		
-		#define disable_mainTimer() *MTIM_ADDR &= ~(1 << 0);	
-
-		#define enable_mainTimer() *MTIM_ADDR |=  (1 << 0);
+    volatile uint32_t * CNT =  (volatile uint32_t *)TIM3_ADDR + 0x24;
     
 		
     inline void set_main_RVR(uint32_t ticks)
@@ -113,7 +104,7 @@ uint32_t ms_to_ticks(uint32_t ms)
 
         (*DIER) &= 0 << 0;
 
-        (*SR) &= 0 <<0
+        (*SR) &= 0 <<0;
 
         (*CR1) |= 1 << 0;
     }
@@ -127,12 +118,8 @@ uint32_t ms_to_ticks(uint32_t ms)
     volatile  uint32_t  *DIER = (volatile uint32_t *)TIM4_ADDR + 0x0C;
     volatile  uint32_t  *SR=  (volatile uint32_t *)TIM4_ADDR + 0x10;
     volatile  uint32_t * CR1 = (volatile uint32_t *)TIM4_ADDR + 0x0;
-    volatile uint32_t * CNT =  (volatile uint32_t *)TIM4_ADDR 0x24;
+    volatile uint32_t * CNT =  (volatile uint32_t *)TIM4_ADDR + 0x24;
 				
-		
-		#define disable_mainTimer() *MTIM_ADDR &= ~(1 << 0);	
-
-		#define enable_mainTimer() *MTIM_ADDR |=  (1 << 0);
     
 		
     inline void set_main_RVR(uint32_t ticks)
@@ -150,7 +137,7 @@ uint32_t ms_to_ticks(uint32_t ms)
 
         (*DIER) &= 0 << 0;
 
-        (*SR) &= 0 <<0
+        (*SR) &= 0 <<0;
 
         (*CR1) |= 1 << 0;
     }
@@ -164,12 +151,9 @@ uint32_t ms_to_ticks(uint32_t ms)
     volatile  uint32_t  *DIER = (volatile uint32_t *)TIM4_ADDR + 0x0C;
     volatile  uint32_t  *SR=  (volatile uint32_t *)TIM4_ADDR + 0x10;
     volatile  uint32_t * CR1 = (volatile uint32_t *)TIM4_ADDR + 0x0;
-    volatile uint32_t * CNT =  (volatile uint32_t *)TIM4_ADDR 0x24;
+    volatile uint32_t * CNT =  (volatile uint32_t *)TIM4_ADDR +0x24;
 				
-		
-		#define disable_mainTimer() *MTIM_ADDR &= ~(1 << 0);	
 
-		#define enable_mainTimer() *MTIM_ADDR |=  (1 << 0);
     
 		
     inline void set_main_RVR(uint32_t ticks)
@@ -187,7 +171,7 @@ uint32_t ms_to_ticks(uint32_t ms)
 
         (*DIER) &= 0 << 0;
 
-        (*SR) &= 0 <<0
+        (*SR) &= 0 <<0;
 
         (*CR1) |= 1 << 0;
     }
@@ -201,12 +185,8 @@ uint32_t ms_to_ticks(uint32_t ms)
     volatile  uint32_t  *DIER = (volatile uint32_t *)TIM9_ADDR + 0x0C;
     volatile  uint32_t  *SR=  (volatile uint32_t *)TIM9_ADDR + 0x10;
     volatile  uint32_t * CR1 = (volatile uint32_t *)TIM9_ADDR + 0x0;
-    volatile uint32_t * CNT =  (volatile uint32_t *)TIM9_ADDR 0x24;
+    volatile uint32_t * CNT =  (volatile uint32_t *)TIM9_ADDR+ 0x24;
 						
-		
-		#define disable_mainTimer() *MTIM_ADDR &= ~(1 << 0);	
-
-		#define enable_mainTimer() *MTIM_ADDR |=  (1 << 0);
     
 		
     inline void set_main_RVR(uint32_t ticks)
@@ -224,7 +204,7 @@ uint32_t ms_to_ticks(uint32_t ms)
 
         (*DIER) &= 0 << 0;
 
-        (*SR) &= 0 <<0
+        (*SR) &= 0 <<0;
 
         (*CR1) |= 1 << 0;
     }
@@ -238,12 +218,8 @@ uint32_t ms_to_ticks(uint32_t ms)
     volatile  uint32_t  *DIER = (volatile uint32_t *)TIM10_ADDR + 0x0C;
     volatile  uint32_t  *SR=  (volatile uint32_t *)TIM10_ADDR + 0x10;
     volatile  uint32_t * CR1 = (volatile uint32_t *)TIM10_ADDR + 0x0;
-    volatile uint32_t * CNT =  (volatile uint32_t *)TIM10_ADDR 0x24;
+    volatile uint32_t * CNT =  (volatile uint32_t *)TIM10_ADDR + 0x24;
 						
-		
-		#define disable_mainTimer() *MTIM_ADDR &= ~(1 << 0);	
-
-		#define enable_mainTimer() *MTIM_ADDR |=  (1 << 0);
     
 		
     inline void set_main_RVR(uint32_t ticks)
@@ -261,7 +237,7 @@ uint32_t ms_to_ticks(uint32_t ms)
 
         (*DIER) &= 0 << 0;
 
-        (*SR) &= 0 <<0
+        (*SR) &= 0 <<0;
 
         (*CR1) |= 1 << 0;
     }
@@ -275,7 +251,7 @@ uint32_t ms_to_ticks(uint32_t ms)
     volatile  uint32_t  *DIER = (volatile uint32_t *)TIM11_ADDR + 0x0C;
     volatile  uint32_t  *SR=  (volatile uint32_t *)TIM11_ADDR + 0x10;
     volatile  uint32_t * CR1 = (volatile uint32_t *)TIM11_ADDR + 0x0;
-    volatile uint32_t * CNT =  (volatile uint32_t *)TIM11_ADDR 0x24;
+    volatile uint32_t * CNT =  (volatile uint32_t *)TIM11_ADDR + 0x24;
     
 		
     inline void set_main_RVR(uint32_t ticks)
@@ -293,7 +269,7 @@ uint32_t ms_to_ticks(uint32_t ms)
 
         (*DIER) &= 0 << 0;
 
-        (*SR) &= 0 <<0
+        (*SR) &= 0 <<0;
 
         (*CR1) |= 1 << 0;
     }

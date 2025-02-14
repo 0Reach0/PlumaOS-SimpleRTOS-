@@ -1,7 +1,7 @@
 #include "TaskManagment.h"
 #include "TaskScheduler.h"
 #include <stdlib.h>
-#include "CPUDriver.h"
+#include "Kernel.h"
 #include "TaskDelay.h"
 
 struct sTask * current;

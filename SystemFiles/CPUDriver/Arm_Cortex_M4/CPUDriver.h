@@ -25,15 +25,6 @@ extern volatile uint32_t *FPCCR;
 /** @brief Floating Point Context Address Register (volatile) */
 extern volatile uint32_t *FPCAR;
 
-/** @brief System Timer Reload Value Register (volatile) */
-extern volatile uint32_t *SYS_RVR;
-
-/** @brief System Timer Current Value Register (volatile) */
-extern volatile uint32_t *SYS_CVR;
-
-/** @brief System Timer Control/Status Register (volatile) */
-extern volatile uint32_t *SYS_CSR;
-
 /** @brief Exception return value pattern */
 extern uint32_t exc_return;
 
@@ -43,13 +34,6 @@ extern uint32_t exc_return;
 #define ARCH ARM_V7
 
 
-
-
-/** @brief Get current 24-bit timer value */
-#define get_CVR (*SYS_CVR >> 8)
-
-/** @brief Get timer reload value */
-#define get_RVR (*SYS_RVR >> 8)
 
 
 
@@ -67,6 +51,21 @@ extern uint32_t exc_return;
 
 
 #ifdef USE_SYSTICK_TIMER_AS_MAIN
+/** @brief System Timer Reload Value Register (volatile) */
+extern volatile uint32_t *SYS_RVR;
+
+/** @brief System Timer Current Value Register (volatile) */
+extern volatile uint32_t *SYS_CVR;
+
+/** @brief System Timer Control/Status Register (volatile) */
+extern volatile uint32_t *SYS_CSR;
+    
+   
+/** @brief Get current timer value */
+#define get_CVR (*SYS_CVR >> 8)
+
+/** @brief Get timer reload value */
+#define get_RVR (*SYS_RVR >> 8)
 
 
 /** @brief Disable SysTick timer interrupts */
@@ -74,6 +73,14 @@ extern uint32_t exc_return;
 
 /** @brief Enable SysTick timer interrupts */
 #define enable_mainTimer() *SYS_CSR |=  (1 << 1)
+    
+
+/**
+ * @brief Set timer reload value
+ * @param ticks Reload value in hardware timer ticks
+ */
+void set_main_RVR(uint32_t ticks);
+
 
 
 #endif
@@ -154,8 +161,6 @@ extern void disable_irq(void);
 /** @brief Enable all interrupts */
 extern void enable_irq(void);
 
-/** @brief Set timer reload value */
-void set_main_RVR(uint32_t ticks);
 
 /** @brief Get and clear FPU status */
 extern uint8_t GET_FPU_STATUS_AND_RESET();

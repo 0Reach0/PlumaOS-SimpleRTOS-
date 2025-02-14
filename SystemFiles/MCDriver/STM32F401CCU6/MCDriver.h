@@ -62,16 +62,36 @@ extern volatile uint32_t *MTIM_ADDR;
 
 
 
+#ifndef USE_SYSTICK_TIMER_AS_MAIN
+extern  volatile uint32_t * MTIM_ADDR;
+extern  volatile  uint32_t  * ARR;
+extern  volatile  uint32_t  *DIER;
+extern  volatile  uint32_t  *SR;
+extern  volatile  uint32_t * CR1;
+extern  volatile uint32_t * CNT;
+    
+ /** @brief Get current timer value */
+#define get_CVR (*CNT)
+
+/** @brief Get timer reload value */
+#define get_RVR (*ARR)  
 
 
+/** @brief Disable SysTick timer interrupts */
+#define disable_mainTimer() *MTIM_ADDR &= ~(1 << 0);
 
-
-
+/** @brief Enable SysTick timer interrupts */
+#define enable_mainTimer() *MTIM_ADDR |=  (1 << 0);
+    
 /**
  * @brief Set timer reload value
  * @param ticks Reload value in hardware timer ticks
  */
 void set_main_RVR(uint32_t ticks);
+
+
+#endif
+
 
 /**
  * @brief Convert milliseconds to timer ticks

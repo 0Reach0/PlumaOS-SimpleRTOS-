@@ -14,9 +14,9 @@
 #ifdef QUEUE_MESSAGES
 
 
-#include "PlumaConfig.h"
 #include "sTask.h"
 #include <stdint.h>
+
 
 
 
@@ -26,8 +26,6 @@
  * @{
  */
 
-/** @brief array of tasks waiting for messages or space */
-extern QM_T_Pair ** taskWaitingQueues;
 
 /** @brief Current number of delayed tasks */
 extern uint8_t taskWaitingQueuesSize ;

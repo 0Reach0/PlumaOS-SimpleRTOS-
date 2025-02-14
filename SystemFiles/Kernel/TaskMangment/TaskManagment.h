@@ -18,17 +18,6 @@
  * @{
  */
 
-/** @brief Pointer to currently running task */
-extern struct sTask *current; 
-
-/** @brief Task queue array*/
-extern struct sTask **queue[PRIOR_LEVELS];
-
-/** @brief Task queue size*/
-extern uint8_t queueSize[PRIOR_LEVELS];
-
-/** @brief Reserved queue size */
-extern uint8_t reservedQueueSize[PRIOR_LEVELS];
 
 
 
@@ -64,6 +53,21 @@ extern uint8_t reservedQueueSize[PRIOR_LEVELS];
 
 #define TASK_RESIZE_INCREMENT 3
 /** @} */ // end of task_management_config
+
+
+
+/** @brief Pointer to currently running task */
+extern struct sTask *current; 
+
+/** @brief Task queue array*/
+extern struct sTask **queue[PRIOR_LEVELS];
+
+/** @brief Task queue size*/
+extern uint8_t queueSize[PRIOR_LEVELS];
+
+/** @brief Reserved queue size */
+extern uint8_t reservedQueueSize[PRIOR_LEVELS];
+
 
 
 
